@@ -2,6 +2,16 @@
 
 Galeria de arte e votação em Laravel + MySQL, com interface em português, painel de curadoria e relatório PDF.
 
+## Material para as aulas
+
+- [Slides de gestão do projeto](docs/apresentacao/gestao-do-projeto.html) — 26 slides, do problema à operação.
+- [Slides da oficina de planejamento](docs/apresentacao/oficina-de-planejamento.html) — 15 slides com atividades para as equipes.
+
+- [Gestão do projeto: do problema ao software em uso](docs/apresentacao/gestao-do-projeto.md) — descoberta, escopo, planejamento, desenvolvimento, validação e operação em 16 etapas.
+- [Caderno de planejamento da equipe](docs/apresentacao/modelos-de-planejamento.md) — modelos para preencher requisitos, tarefas, riscos, mudanças e aceitação.
+- [Apresentação técnica](docs/apresentacao/apresentacao.html) — 32 slides sobre MySQL e Laravel; abra no navegador.
+- [Roteiro do professor](docs/apresentacao/roteiro-professor.md) — sequência de aulas, atividades e notas dos slides.
+
 ## Funcionalidades
 
 - Exposições independentes com estados: preparação, votação aberta e encerrada.
