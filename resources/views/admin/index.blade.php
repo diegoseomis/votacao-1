@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('title', 'Curadoria')
+@section('content')
+<section class="page-heading"><p class="eyebrow">ÁREA DO CURADOR</p><h1>Suas exposições.</h1><p class="intro">Organize as obras, convide o público e acompanhe os resultados.</p></section>
+<div class="admin-columns"><section><h2>Exposições</h2>@forelse($exhibitions as $exhibition)<a class="admin-row" href="{{ route('admin.show', $exhibition) }}"><div><span class="badge {{ $exhibition->status }}">{{ $exhibition->status_label }}</span><h3>{{ $exhibition->title }}</h3><p>{{ $exhibition->artworks_count }} obras · {{ $exhibition->votes_count }} votos</p></div><span>Gerenciar ↗</span></a>@empty<div class="empty">Crie sua primeira exposição no formulário ao lado.</div>@endforelse{{ $exhibitions->links('partials.pagination') }}</section><section class="panel"><p class="eyebrow">COMECE UMA NOVA HISTÓRIA</p><h2>Nova exposição</h2><form method="post" action="{{ route('admin.store') }}">@csrf<label for="title">Nome da exposição</label><input id="title" name="title" maxlength="150" value="{{ old('title') }}" required><label for="description">Apresentação</label><textarea id="description" name="description" maxlength="3000" rows="5">{{ old('description') }}</textarea><button class="button full">Criar exposição +</button></form></section></div>
+@endsection
