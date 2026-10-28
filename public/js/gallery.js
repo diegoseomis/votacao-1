@@ -14,6 +14,8 @@ document.querySelectorAll('[data-vote]').forEach(button => {
         document.getElementById('vote-dialog').showModal();
     });
 });
+const voteDialog = document.getElementById('vote-dialog');
+if (voteDialog?.dataset.invalid === 'true') voteDialog.showModal();
 document.querySelectorAll('.close-dialog').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
 document.querySelectorAll('form[data-confirm]').forEach(form => form.addEventListener('submit', event => {
     if (!window.confirm(form.dataset.confirm)) event.preventDefault();

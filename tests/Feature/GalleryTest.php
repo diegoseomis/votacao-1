@@ -35,29 +35,29 @@ class GalleryTest extends TestCase
         $this->get(route('gallery.show', $open))->assertOk()->assertSee('Horizontes');
     }
 
-    public function test_vote_is_counted_once_per_normalized_email_per_exhibition(): void
+    public function test_vote_requires_a_name_and_allows_repeated_names(): void
     {
         $exhibition = $this->exhibition();
-        $data = ['email' => 'Pessoa@example.com', 'consent' => '1', 'artwork_id' => $exhibition->artworks->first()->id];
+        $data = ['voter_name' => 'Pessoa Exemplo', 'artwork_id' => $exhibition->artworks->first()->id];
         $this->post(route('gallery.vote', $exhibition), $data)->assertSessionHasNoErrors();
-        $this->post(route('gallery.vote', $exhibition), [...$data, 'email' => 'pessoa@example.com'])->assertSessionHasErrors('email');
-        $this->assertDatabaseCount('votes', 1);
+        $this->post(route('gallery.vote', $exhibition), $data)->assertSessionHasNoErrors();
+        $this->assertDatabaseCount('votes', 2);
+        $this->assertSame(['Pessoa Exemplo', 'Pessoa Exemplo'], Vote::orderBy('id')->pluck('voter_name')->all());
         $other = $this->exhibition();
         $this->post(route('gallery.vote', $other), [...$data, 'artwork_id' => $other->artworks->first()->id])->assertSessionHasNoErrors();
-        $this->assertDatabaseCount('votes', 2);
-        $this->assertNotEquals($data['email'], Vote::first()->voter_hash);
+        $this->assertDatabaseCount('votes', 3);
     }
 
     public function test_closed_draft_and_foreign_artwork_votes_are_rejected(): void
     {
         foreach (['draft', 'closed'] as $status) {
             $exhibition = $this->exhibition($status);
-            $this->post(route('gallery.vote', $exhibition), ['email' => 'a@example.com', 'consent' => 1, 'artwork_id' => $exhibition->artworks->first()->id])->assertSessionHasErrors('vote');
+            $this->post(route('gallery.vote', $exhibition), ['voter_name' => 'Pessoa', 'artwork_id' => $exhibition->artworks->first()->id])->assertSessionHasErrors('vote');
         }
         $open = $this->exhibition();
         $other = $this->exhibition();
-        $this->post(route('gallery.vote', $open), ['email' => 'a@example.com', 'consent' => 1, 'artwork_id' => $other->artworks->first()->id])->assertNotFound();
-        $this->post(route('gallery.vote', $open), ['email' => 'invalid', 'artwork_id' => $open->artworks->first()->id])->assertSessionHasErrors(['email', 'consent']);
+        $this->post(route('gallery.vote', $open), ['voter_name' => 'Pessoa', 'artwork_id' => $other->artworks->first()->id])->assertNotFound();
+        $this->post(route('gallery.vote', $open), ['artwork_id' => $open->artworks->first()->id])->assertSessionHasErrors('voter_name');
         $this->assertDatabaseCount('votes', 0);
     }
 
@@ -100,7 +100,7 @@ class GalleryTest extends TestCase
         $exhibition = $this->exhibition('closed');
         $second = $exhibition->artworks()->create(['title' => 'Segunda', 'artist' => 'Bia', 'image_path' => 'test.png']);
         foreach ([$exhibition->artworks()->first()->id, $second->id] as $id) {
-            Vote::create(['exhibition_id' => $exhibition->id, 'artwork_id' => $id, 'voter_hash' => hash('sha256', (string) $id)]);
+            Vote::create(['exhibition_id' => $exhibition->id, 'artwork_id' => $id, 'voter_name' => 'Pessoa '.$id]);
         }
         $this->actingAs($this->admin())->get(route('admin.show', $exhibition))->assertOk()->assertViewHas('total', 2)->assertViewHas('artworks', fn ($works) => $works->pluck('rank')->all() === [1, 1]);
         $this->get('/admin')->assertOk();

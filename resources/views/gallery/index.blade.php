@@ -8,5 +8,5 @@
 <div class="empty"><span class="empty-icon">◯</span><h3>Novos olhares estão chegando.</h3><p>As exposições aparecerão aqui assim que a curadoria abrir a votação.</p></div>
 @endforelse
 </div>{{ $exhibitions->links('partials.pagination') }}</section>
-<section class="steps"><div><span>01 / EXPLORE</span><h3>Deixe o olhar passear.</h3><p>Conheça as obras e os artistas de cada exposição.</p></div><div><span>02 / ESCOLHA</span><h3>Encontre a sua favorita.</h3><p>Amplie as imagens e observe cada detalhe.</p></div><div><span>03 / PARTICIPE</span><h3>Seu voto faz parte.</h3><p>Um voto por e-mail em cada exposição. Escolha com carinho.</p></div></section>
+<section class="steps"><div><span>01 / EXPLORE</span><h3>Deixe o olhar passear.</h3><p>Conheça as obras e os artistas de cada exposição.</p></div><div><span>02 / ESCOLHA</span><h3>Encontre a sua favorita.</h3><p>Amplie as imagens e observe cada detalhe.</p></div><div><span>03 / PARTICIPE</span><h3>Seu voto faz parte.</h3><p>Informe seu nome e vote na sua favorita.</p></div></section>
 @endsection
